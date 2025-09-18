@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: wanderella         # change to any name you like
+    env: node
+    plan: free               # or starter/standard if you upgrade
+    buildCommand: "npm install"
+    startCommand: "node app.js"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        sync: false           # means you’ll add it in Render Dashboard, not hardcoded here
+      - key: SESSION_SECRET
+        sync: false
