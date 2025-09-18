@@ -1,0 +1,77 @@
+body{
+    background-color: pink;
+}
+
+.navbar{
+    height:5rem;
+}
+
+.fa-compass{
+    color:green;
+}
+
+.nav-link{
+color:red !important;
+}
+
+
+
+.f-info-links a {
+    text-decoration: none;
+}
+
+/* Main footer container */
+.f-info {
+    height: 8rem;
+    background-color: transparent;  /* Use 'transparent' instead of 'none' */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Links container inside footer */
+.f-info-links {
+    width: 100%;
+    display: flex;              /* Ensure links are flex items too */
+    justify-content: center;
+    gap: 1rem;                  /* Add spacing between links */
+}
+
+/* Social icons container */
+.f-info-socials {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Individual social icons */
+.f-info-socials i {
+    margin-right: 1rem;
+    font-size: 1.5rem;         /* Optional: better visibility */
+    cursor: pointer;          /* Optional: pointer on hover */
+}
+
+
+.card
+{
+    border:none !important;
+}
+
+.card-img-top{
+
+    border-radius:2rem !important;
+}
+
+
+.card-img-overlay{
+
+    opacity: 0.2 !important;
+    background-color:white !important;
+}
+
+.card-img{
+    height:100px;
+    width:100px;
+    align-items: center;
+}

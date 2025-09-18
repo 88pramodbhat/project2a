@@ -1,0 +1,68 @@
+<%- layout('layout/boilerplate') %>
+
+<body class="p-4">
+    <h1 class="mb-4">This is Pramod's Villa</h1>
+
+    <div class="card shadow" style="width: 700px;">
+        <!-- Card image -->
+        <img src="<%= listings.image.url %>" alt="listing_image" class="card-img-top" style="height: 500px; object-fit: cover;">
+
+        <!-- Card body -->
+        <div class="card-body">
+            <h5 class="card-title"><%= listings.title %></h5>
+            <p class="card-text"><%= listings.description %></p>
+            <p class="card-text"><strong>Price:</strong> &#8377;<%= listings.price %></p>
+            <p class="card-text"><strong>Country:</strong> <%= listings.country %></p>
+            <p class="card-text"><strong>Location:</strong> <%= listings.location %></p>
+
+            <!-- Delete button -->
+            <form method="POST" action="/listings/<%= listings._id %>?_method=DELETE">
+                <button class="btn btn-danger">Delete this Listing</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Review section -->
+    <h3 class="mt-4">Leave a Review</h3>
+    <form method="POST" action="/listings/<%= listings._id %>/reviews" novalidate class="needs-validation">
+        <label for="rating">Rating</label>
+        <input type="range" min="1" max="5" id="rating" name="review[rating]" class="form-range">
+
+        <h3 class="mt-3">Leave a Comment</h3>
+        <textarea id="comment" name="review[comment]" placeholder="Enter your comment" cols="30" rows="3" class="form-control" required></textarea>
+
+        <div class="invalid-feedback">
+            Please provide a comment.
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">Submit Review</button>
+    </form>
+
+    <!-- Display reviews -->
+     
+    <ul class="mt-4">
+        <% if (listings.reviews && listings.reviews.length > 0) { %>
+            <% for (let review of listings.reviews) { %>
+                <li class="mb-3">
+                    <div class="card col-5 ms-3 mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= review.name || "Anonymous" %></h5>
+                            <p><strong>Rating:</strong> <%= review.rating %></p>
+                            <p><strong>Comment:</strong> <%= review.comment %></p>
+                            <p>
+                                <small><strong>Date:</strong> 
+                                    <%= review.createdAt ? review.createdAt.toDateString() : "N/A" %>
+                                </small>
+                            </p>
+                            <form method="POST" action="/listings/<%= listings._id %>/reviews/<%= review._id %>?_method=DELETE">
+                                <button type="submit" class="btn btn-primary mt-2">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+            <% } %>
+        <% } else { %>
+            <p class="mt-3">No reviews yet. Be the first to leave one!</p>
+        <% } %>
+    </ul>
+</body>
