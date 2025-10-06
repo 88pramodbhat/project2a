@@ -37,7 +37,7 @@ main()
 
 // ------------------- Session & Flash -------------------
 const sessionOptions = {
-  secret: "thisissecret",
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {

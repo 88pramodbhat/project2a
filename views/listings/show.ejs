@@ -10,10 +10,17 @@
         <!-- Card body -->
         <div class="card-body">
             <h5 class="card-title"><%= listings.title %></h5>
+
+            <p class="card-text">owner is :<i><%= listings.owner.username %></i></p>
+
             <p class="card-text"><%= listings.description %></p>
             <p class="card-text"><strong>Price:</strong> &#8377;<%= listings.price %></p>
             <p class="card-text"><strong>Country:</strong> <%= listings.country %></p>
             <p class="card-text"><strong>Location:</strong> <%= listings.location %></p>
+
+            <% if (currentUser && currentUser._id.toString() === listings.owner._id.toString()) { %>
+                <a href="/listings/<%= listings._id %>/edit" class="btn btn-secondary">Edit</a>
+            <% } %>
 
             <!-- Delete button -->
             <form method="POST" action="/listings/<%= listings._id %>?_method=DELETE">
@@ -39,7 +46,6 @@
     </form>
 
     <!-- Display reviews -->
-     
     <ul class="mt-4">
         <% if (listings.reviews && listings.reviews.length > 0) { %>
             <% for (let review of listings.reviews) { %>

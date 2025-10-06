@@ -8,6 +8,8 @@ const ExpressError = require("../../util/expresserror.js");
 const Listing = require("../../model/listing.js");
 const Review = require("../../model/review.js");
 const { isloggedin } = require("../../middleware.js");
+const listingsController= require("../../controllers/listings.js");
+
 
 // ------------------- Validation Middlewares -------------------
 function validateListing(req, res, next) {
@@ -33,10 +35,7 @@ function validateReview(req, res, next) {
 // Index - show all listings
 router.get(
   "/",
-  wrapAsync(async (req, res) => {
-    const all_listings = await Listing.find({});
-    res.render("listings/index.ejs", { all_listings });
-  })
+  wrapAsync(listingsController.index)
 );
 
 // New - form to create listing
@@ -51,6 +50,9 @@ router.post(
   validateListing,
   wrapAsync(async (req, res) => {
     const newListing = new Listing(req.body.listings);
+
+    newListing.owner=req.user._id;
+    
     await newListing.save();
     req.flash("success", "Successfully saved the listing");
     res.redirect("/listings");
@@ -62,11 +64,12 @@ router.get(
   "/:id",
   wrapAsync(async (req, res, next) => {
     const { id } = req.params;
-    const listings = await Listing.findById(id).populate("reviews");
+    const listings = await Listing.findById(id).populate("reviews").populate("owner");
 
     if (!listings) {
       return next(new ExpressError("Listing not found", 404));
     }
+    console.log(listings);
 
     res.render("listings/show.ejs", { listings });
   })
@@ -121,15 +124,16 @@ router.post(
   wrapAsync(async (req, res, next) => {
     const { id } = req.params;
 
-    let listing = await Listing.findById(id);
+    const listing = await Listing.findById(id);
     if (!listing) {
       return next(new ExpressError("Listing not found", 404));
     }
 
-    let newReview = new Review(req.body.review);
+    const newReview = new Review(req.body.review);
+    newReview.owner = req.user._id; // Associate review with user
     await newReview.save();
 
-    listing.reviews.push(newReview);
+    listing.reviews.push(newReview._id); // Push only the review's ObjectId
     await listing.save();
 
     req.flash("success", "Successfully added the review");

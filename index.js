@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const initdata = require("./data.js");
-const listing = require("./model/listing.js");
+const Listing = require("./model/listing.js");
 
 async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/wanderella");
@@ -15,8 +15,22 @@ main()
   });
 
 const initdb = async () => {
-  await listing.deleteMany({});
-  await listing.insertMany(initdata.data);
+  try {
+    await Listing.deleteMany({}); // clear old data
+
+    // Add owner field to every object
+    const dataWithOwner = initdata.data.map((obj) => ({
+      ...obj,
+      owner: "68d41d7b5d4f52daa8bf3342",
+    }));
+
+    // Insert updated data
+    await Listing.insertMany(dataWithOwner);
+
+    console.log("Database initialized with sample data!");
+  } catch (err) {
+    console.log("Error initializing DB:", err);
+  }
 };
 
-initdb(); // Don't forget to call it if you want it to run
+initdb();
