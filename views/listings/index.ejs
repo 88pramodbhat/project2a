@@ -1,27 +1,25 @@
 <%- layout("layout/boilerplate") %>
 
-<body>
-  <h1>List of All Listings</h1>
+<h1 class="text-center mb-4">All Listings</h1>
 
-  <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
-    <% for (let list of all_listings) { %>
-      <div class="card" style="width: 18rem;">
-        <img src="<%= list.image.url %>" class="card-img-top" alt="list_image" style="height:200px; object-fit: cover;">
-        <div class="card-body">
-          <p class="card-text">
-            <strong>Title:</strong> <%= list.title %> <br>
-            <strong>Price:</strong> ₹<%= list.price %>
-          </p>
-          <a href="/listings/<%= list._id %>" class="btn btn-primary">View</a>
-          <a href="/listings/<%= list._id %>/edit" class="btn btn-secondary">Edit</a>
-        </div>
+<div class="d-flex flex-wrap gap-3 justify-content-center">
+  <% for (let list of all_listings) { %>
+    <div class="card shadow-sm" style="width: 18rem;">
+      <img src="<%= list.image.url %>" class="card-img-top" alt="listing_image" style="height: 200px; object-fit: cover;">
+      <div class="card-body">
+        <p class="card-text mb-2">
+          <strong>Title:</strong> <%= list.title %> <br>
+          <strong>Price:</strong> ₹<%= list.price %>
+        </p>
+        <a href="/listings/<%= list._id %>" class="btn btn-primary btn-sm">View</a>
+        <% if (currentUser && currentUser._id.toString() === list.owner.toString()) { %>
+          <a href="/listings/<%= list._id %>/edit" class="btn btn-secondary btn-sm">Edit</a>
+        <% } %>
       </div>
-    <% } %>
-  </div>
+    </div>
+  <% } %>
+</div>
 
-  <br><br>
-
-  <form method="GET" action="/listings/new">
-    <button>Create New Listing</button>
-  </form>
-</body>
+<div class="text-center mt-4">
+  <a href="/listings/new" class="btn btn-success">Create New Listing</a>
+</div>
