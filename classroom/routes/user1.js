@@ -14,11 +14,11 @@ router.get("/signup", (req, res) => res.render("users/signup.ejs"));
 router.post("/signup", async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
-    const newUser = new User({ email, username });
+    const newUser = new User({ username, email });
     const registeredUser = await User.register(newUser, password);
     req.login(registeredUser, (err) => {
       if (err) return next(err);
-      req.flash("success", "Welcome to Wanderella!");
+      req.flash("success", "Welcome!");
       res.redirect("/listings");
     });
   } catch (err) {
@@ -26,7 +26,6 @@ router.post("/signup", async (req, res, next) => {
     res.redirect("/signup");
   }
 });
-
 
 // Login
 router.get("/login", (req, res) => res.render("users/login.ejs"));
