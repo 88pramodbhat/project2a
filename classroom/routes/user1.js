@@ -7,6 +7,8 @@ const { saveredirectUrl } = require("../../middleware.js");
 router.use(express.urlencoded({ extended: true }));
 
 // Signup
+// classroom/routes/user1.js
+
 router.get("/signup", (req, res) => res.render("users/signup.ejs"));
 
 router.post("/signup", async (req, res, next) => {
@@ -24,6 +26,7 @@ router.post("/signup", async (req, res, next) => {
     res.redirect("/signup");
   }
 });
+
 
 // Login
 router.get("/login", (req, res) => res.render("users/login.ejs"));
